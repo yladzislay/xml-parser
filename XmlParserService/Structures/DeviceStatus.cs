@@ -11,6 +11,6 @@ namespace XmlParserService.Structures
         public int IndexWithinRole { get; set; }
 
         [XmlElement("RapidControlStatus")]
-        public string RapidControlStatus { get; set; }
+        public RapidControlStatus RapidControlStatus { get; set; }
     }
 }

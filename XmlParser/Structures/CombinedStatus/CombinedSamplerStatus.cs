@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace XmlParserService.Structures.CombinedStatus;
+namespace XmlParser.Structures.CombinedStatus;
 
 [XmlRoot("CombinedSamplerStatus")]
 public class CombinedSamplerStatus : CombinedStatus

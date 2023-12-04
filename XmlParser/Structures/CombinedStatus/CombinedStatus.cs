@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace XmlParserService.Structures.CombinedStatus;
+namespace XmlParser.Structures.CombinedStatus;
 
 [XmlInclude(typeof(CombinedSamplerStatus))]
 [XmlInclude(typeof(CombinedPumpStatus))]

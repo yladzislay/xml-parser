@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace XmlParserService.Structures
+namespace XmlParser.Structures
 {
     public class DeviceStatus
     {

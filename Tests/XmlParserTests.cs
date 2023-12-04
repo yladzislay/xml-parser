@@ -1,24 +1,23 @@
-﻿using System.IO;
-using XmlParserService.Structures;
-using XmlParserService.Structures.CombinedStatus;
+﻿using XmlParser.Structures;
+using XmlParser.Structures.CombinedStatus;
 using Xunit;
 
-namespace XmlParserService.Tests
+namespace Tests
 {
     public class XmlParserTests
     {
         [Fact]
         public void XmlParserCommonTest()
         {
-            var xmlFilePath = Path.Combine("XmlData", "status.xml");
+            var xmlFilePath = Path.Combine("Resources", "status_1.xml");
             var xml = File.ReadAllText(xmlFilePath);
             
-            var instrumentStatus = XmlParser.ParseInstrumentStatus(xml);
+            var instrumentStatus = XmlParser.Parser.ParseInstrumentStatus(xml);
 
             Assert.NotNull(instrumentStatus);
             Assert.IsType<InstrumentStatus>(instrumentStatus);
 
-            Assert.NotNull(instrumentStatus?.DeviceStatusList);
+            Assert.NotNull(instrumentStatus.DeviceStatusList);
             Assert.NotEmpty(instrumentStatus.DeviceStatusList);
 
             var firstDeviceStatus = instrumentStatus.DeviceStatusList[0];

@@ -1,7 +1,7 @@
 using System.Xml.Serialization;
-using XmlParserService.Structures.CombinedStatus;
+using XmlParser.Structures.CombinedStatus;
 
-namespace XmlParserService.Structures;
+namespace XmlParser.Structures;
 
 [XmlRoot("RapidControlStatus")]
 public class RapidControlStatus

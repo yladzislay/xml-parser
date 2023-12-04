@@ -1,10 +1,10 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using XmlParserService.Structures;
+using XmlParser.Structures;
 
-namespace XmlParserService;
+namespace XmlParser;
 
-public static class XmlParser
+public static class Parser
 {
     public static InstrumentStatus? ParseInstrumentStatus(string xml)
     {

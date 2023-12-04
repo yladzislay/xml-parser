@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace XmlParserService.Structures
+namespace XmlParser.Structures
 {
     [XmlRoot("InstrumentStatus")]
     public class InstrumentStatus

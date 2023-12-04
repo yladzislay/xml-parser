@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\XmlParserService\XmlParserService.csproj" />
+      <ProjectReference Include="..\XmlParser\XmlParser.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -17,7 +17,16 @@
 
     <ItemGroup>
       <None Remove="XmlData\status.xml" />
-      <EmbeddedResource Include="XmlData\status.xml">
+      <EmbeddedResource Include="Resources\status_1.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Resources\status_2.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Resources\status_3.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Resources\status_4.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
     </ItemGroup>

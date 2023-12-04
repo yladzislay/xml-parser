@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlParser", "XmlParser\XmlP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{20B2C183-9B4B-4407-8EFE-D52CEC878116}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{7FFD7FF7-889E-40B6-88C6-DE2308DA30BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{20B2C183-9B4B-4407-8EFE-D52CEC878116}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20B2C183-9B4B-4407-8EFE-D52CEC878116}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20B2C183-9B4B-4407-8EFE-D52CEC878116}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FFD7FF7-889E-40B6-88C6-DE2308DA30BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FFD7FF7-889E-40B6-88C6-DE2308DA30BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FFD7FF7-889E-40B6-88C6-DE2308DA30BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FFD7FF7-889E-40B6-88C6-DE2308DA30BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

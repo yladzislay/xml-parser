@@ -2,18 +2,21 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using RabbitMQ;
 using XmlParser.Helpers;
 
 namespace XmlParser
 {
     public class Microservice(
         IConfiguration configuration,
-        ILogger<Microservice> logger
+        ILogger<Microservice> logger,
+        RabbitMqClient rabbitMqClient
     ) : IHostedService, IDisposable
     {
         private string XmlFilesDirectory { get; } = configuration["XmlParser:XmlDirectory"] ?? "Resources";
         private ILogger<Microservice> Logger { get; } = logger;
-        private Timer LoadXmlFilesTimer { get; set; }
+        private RabbitMqClient RabbitMqClient { get; } = rabbitMqClient;
+        private Timer? LoadXmlFilesTimer { get; set; }
         private int ProcessedFilesCount { get; set; }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -24,11 +27,11 @@ namespace XmlParser
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            LoadXmlFilesTimer.Change(Timeout.Infinite, 0);
+            LoadXmlFilesTimer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
         }
-
-        public void Dispose() => LoadXmlFilesTimer.Dispose();
+        
+        public void Dispose() => LoadXmlFilesTimer?.Dispose();
 
         public int GetProcessedFilesCount() => ProcessedFilesCount;
 
@@ -53,8 +56,9 @@ namespace XmlParser
                 var xml = await File.ReadAllTextAsync(xmlFilePath);
                 var instrumentStatus = Parser.ParseInstrumentStatus(xml);
                 await Task.Run(() => instrumentStatus.RandomizeModuleState());
-                ProcessedFilesCount++;
                 var jsonInstrumentStatus = JsonConvert.SerializeObject(instrumentStatus);
+                RabbitMqClient.PublishMessage(jsonInstrumentStatus);
+                ProcessedFilesCount++;
             }
             catch (Exception exception)
             {

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Tests
 {
-    public class RabbitMq : IAsyncLifetime
+    public class RabbitMqUnits : IAsyncLifetime
     {
         private IServiceProvider? _serviceProvider;
         private RabbitMqClient? RabbitMqClient { get; set; }

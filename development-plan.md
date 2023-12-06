@@ -16,6 +16,7 @@
 6. DataProcessor.ProcessMessage: Deserialize message.
 7. Define a Database assembly using entity framework core orm with: entities, configuration, automapper, repository.
 8. Cover Mapper with unit-test.
+9. Make ProcessMessage async with using the Database Repository for save instrument-statuses.
 
 ### Next:
 

@@ -1,4 +1,4 @@
-namespace XmlParser.Structures.CombinedStatus;
+namespace Structures.CombinedStatus;
 
 public enum ModuleStatesEnum
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using XmlParser.Structures;
+using Structures;
 
 namespace XmlParser;
 

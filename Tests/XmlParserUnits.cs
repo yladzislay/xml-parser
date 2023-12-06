@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ;
+using Structures;
+using Structures.CombinedStatus;
 using XmlParser;
-using XmlParser.Structures;
-using XmlParser.Structures.CombinedStatus;
 using Xunit;
 
 namespace Tests;

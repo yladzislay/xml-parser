@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace XmlParser.Structures.CombinedStatus;
+namespace Structures.CombinedStatus;
 
 [XmlRoot("CombinedOvenStatus")]
 public class CombinedOvenStatus : CombinedStatus

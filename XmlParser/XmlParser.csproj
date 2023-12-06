@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\RabbitMQ\RabbitMQ.csproj" />
+      <ProjectReference Include="..\Structures\Structures.csproj" />
     </ItemGroup>
     
   <ItemGroup>

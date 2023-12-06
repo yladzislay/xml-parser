@@ -1,5 +1,5 @@
-using XmlParser.Structures;
-using XmlParser.Structures.CombinedStatus;
+using Structures;
+using Structures.CombinedStatus;
 
 namespace XmlParser.Helpers;
 

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ", "RabbitMQ\Rabbit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor", "DataProcessor\DataProcessor.csproj", "{EE94E22C-CCB7-48B2-A1DE-2B1219E3149A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structures", "Structures\Structures.csproj", "{804ED4BD-C265-45CC-8276-40CDDC3FAE6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{EE94E22C-CCB7-48B2-A1DE-2B1219E3149A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE94E22C-CCB7-48B2-A1DE-2B1219E3149A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE94E22C-CCB7-48B2-A1DE-2B1219E3149A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{804ED4BD-C265-45CC-8276-40CDDC3FAE6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{804ED4BD-C265-45CC-8276-40CDDC3FAE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{804ED4BD-C265-45CC-8276-40CDDC3FAE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{804ED4BD-C265-45CC-8276-40CDDC3FAE6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

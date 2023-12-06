@@ -7,7 +7,6 @@ namespace Database.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string ModuleState { get; set; }
         public bool IsBusy { get; set; }
         public bool IsReady { get; set; }
         public bool IsError { get; set; }

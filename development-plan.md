@@ -15,8 +15,9 @@
 5. Define a full cycle integration test.
 6. DataProcessor.ProcessMessage: Deserialize message.
 7. Define a Database assembly using entity framework core orm with: entities, configuration, automapper, repository.
-8. Cover Mapper with unit-test.
+8. Cover Mapper with unit-test with followed fix CombinedStatus to be non abstract.
 9. Make ProcessMessage async with using the Database Repository for save instrument-statuses.
+10. Cover Database.Repository.SaveOrUpdateInstrumentStatusAsync with unit-test with followed fix RapidControlStatusEntity to be without ModuleState property.
 
 ### Next:
 

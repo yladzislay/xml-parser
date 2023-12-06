@@ -9,7 +9,6 @@ public class RapidControlStatusEntityConfiguration : IEntityTypeConfiguration<Ra
     public void Configure(EntityTypeBuilder<RapidControlStatusEntity> builder)
     {
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.ModuleState);
         builder.Property(e => e.IsBusy);
         builder.Property(e => e.IsReady);
         builder.Property(e => e.IsError);

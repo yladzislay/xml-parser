@@ -14,12 +14,10 @@
 4. Initialize DataProcessor microservice.
 5. Define a full cycle integration test.
 6. DataProcessor.ProcessMessage: Deserialize message.
+7. Define a Database assembly using entity framework core orm with: entities, configuration, automapper, repository.
 
 ### Next:
-
-- Define a database scheme.
-- Define DataProcessor.SqlClient.
-
+- Cover Mapper with unit-test.
 - Define Executor application entrypoint.
 - Define and extract configurations.
 - Cover code with exception handling.
@@ -27,4 +25,7 @@
 
 ### Additional:
 
-1. Collect messages if connection lost.
+1. Collect messages if RabbitMQ connection lost. (XmlParser level.)
+2. Collect messages if database connection lost. (DataProcessor level.)
+3. Ability to setup xml files folder with configuration. (Executor level.)
+4. Check that xml-files folder is not empty. (Executor level.)

@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ;
+using Structures;
 
 namespace DataProcessor;
 
@@ -24,7 +26,7 @@ public class Microservice(ILogger<Microservice> logger, RabbitMqClient rabbitMqC
 
     private void ProcessMessage(string message)
     {
-        logger.LogInformation("Processing message: {Message}", message);
+        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(message);
         ReceivedMessagesCount++;
     }
 }

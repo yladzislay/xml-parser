@@ -13,10 +13,9 @@
 
 4. Initialize DataProcessor microservice.
 5. Define a full cycle integration test.
+6. DataProcessor.ProcessMessage: Deserialize message.
 
 ### Next:
-
-- DataProcessor.ProcessMessage: Deserialize message.
 
 - Define a database scheme.
 - Define DataProcessor.SqlClient.

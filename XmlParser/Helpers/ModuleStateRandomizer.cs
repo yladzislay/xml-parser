@@ -13,9 +13,11 @@ public static class ModuleStateRandomizer
         return moduleStates[randomIndex];
     }
     
-    public static void RandomizeModuleState(this InstrumentStatus? instrumentStatus)
+    public static InstrumentStatus RandomizeModuleState(this InstrumentStatus instrumentStatus)
     {
         foreach (var deviceStatus in instrumentStatus.DeviceStatusList)
             deviceStatus.RapidControlStatus.CombinedStatus.ModuleState = GetRandomModuleState();
+
+        return instrumentStatus;
     }
 }

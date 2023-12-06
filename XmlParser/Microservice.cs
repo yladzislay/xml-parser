@@ -13,15 +13,15 @@ namespace XmlParser
         RabbitMqClient rabbitMqClient
     ) : IHostedService, IDisposable
     {
+        private int _publishedMessagesCount;
         private string XmlFilesDirectory { get; } = configuration["XmlParser:XmlDirectory"] ?? "Resources";
         private ILogger<Microservice> Logger { get; } = logger;
         private RabbitMqClient RabbitMqClient { get; } = rabbitMqClient;
         private Timer? LoadXmlFilesTimer { get; set; }
-        private int ProcessedFilesCount { get; set; }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            LoadXmlFilesTimer = new Timer(async _ => await LoadXmlFilesAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+            LoadXmlFilesTimer = new Timer(_ => LoadAndProcessXmlFiles(), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
             return Task.CompletedTask;
         }
 
@@ -30,40 +30,31 @@ namespace XmlParser
             LoadXmlFilesTimer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
         }
-        
+
         public void Dispose() => LoadXmlFilesTimer?.Dispose();
 
-        public int GetProcessedFilesCount() => ProcessedFilesCount;
+        public int GetPublishedMessagesCount() => _publishedMessagesCount;
 
-        private async Task LoadXmlFilesAsync()
+        private void LoadAndProcessXmlFiles()
         {
-            try
+            var xmlFilesPaths = Directory.GetFiles(XmlFilesDirectory, "*.xml");
+
+            foreach (var xmlFilePath in xmlFilesPaths)
             {
-                var xmlFilesPaths = Directory.GetFiles(XmlFilesDirectory, "*.xml");
-                var processingTasks = xmlFilesPaths.Select(ProcessXmlFileAsync).ToList();
-                await Task.WhenAll(processingTasks);
-            }
-            catch (Exception exception)
-            {
-                Logger.LogError("Error loading XML files: {ExceptionMessage}", exception.Message);
+                Task.Run(async () =>
+                {
+                    var xml = await File.ReadAllTextAsync(xmlFilePath);
+                    ProcessXml(xml);
+                    Interlocked.Increment(ref _publishedMessagesCount);
+                });
             }
         }
 
-        private async Task ProcessXmlFileAsync(string xmlFilePath)
+        private void ProcessXml(string xml)
         {
-            try
-            {
-                var xml = await File.ReadAllTextAsync(xmlFilePath);
-                var instrumentStatus = Parser.ParseInstrumentStatus(xml);
-                await Task.Run(() => instrumentStatus.RandomizeModuleState());
-                var jsonInstrumentStatus = JsonConvert.SerializeObject(instrumentStatus);
-                RabbitMqClient.PublishMessage(jsonInstrumentStatus);
-                ProcessedFilesCount++;
-            }
-            catch (Exception exception)
-            {
-                Logger.LogError("Error processing XML file \'{XmlFilePath}\': {ExceptionMessage}", xmlFilePath, exception.Message);
-            }
+            var instrumentStatus = Parser.ParseInstrumentStatus(xml)?.RandomizeModuleState();
+            var jsonInstrumentStatus = JsonConvert.SerializeObject(instrumentStatus);
+            RabbitMqClient.PublishMessage(jsonInstrumentStatus);
         }
     }
 }

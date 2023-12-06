@@ -12,12 +12,12 @@
    4. Refactoring: Define tests units.
 
 4. Initialize DataProcessor microservice.
+5. Define a full cycle integration test.
 
 ### Next:
 
-1. Define a full cycle integration test. 
-2. Add a full cycle integration test. 
-3. Define and extract configurations.
+1. Add a full cycle integration test. 
+2. Define and extract configurations.
 
 ### Additional:
 

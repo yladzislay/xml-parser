@@ -55,6 +55,6 @@ public class XmlParserUnits
         await Task.Delay(2000);
         await microservice.StopAsync(default);
             
-        Assert.True(microservice.GetProcessedFilesCount() > 0);
+        Assert.True(microservice.GetPublishedMessagesCount() > 0);
     }
 }

@@ -28,7 +28,7 @@ namespace RabbitMQ
             _channel.BasicPublish(exchange: "", routingKey: QueueName, basicProperties: null, body: body);
         }
         
-        public void SubscribeForMessages(Action<string?> messageHandler)
+        public void SubscribeForMessages(Action<string> messageHandler)
         {
             var consumer = new EventingBasicConsumer(_channel);
             

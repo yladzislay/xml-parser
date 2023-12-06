@@ -1,0 +1,70 @@
+{
+  "PackageID": "LicArt62",
+  "DeviceStatusList": [
+    {
+      "ModuleCategoryID": "SAMPLER",
+      "IndexWithinRole": 0,
+      "RapidControlStatus": {
+        "CombinedStatus": {
+          "Status": 0,
+          "Vial": "L-A-1",
+          "Volume": 0,
+          "MaximumInjectionVolume": 0,
+          "RackL": "Tray54C",
+          "RackR": "Tray54C",
+          "RackInf": 0,
+          "Buzzer": true,
+          "ModuleState": "Online",
+          "IsBusy": false,
+          "IsReady": true,
+          "IsError": false,
+          "KeyLock": false
+        }
+      }
+    },
+    {
+      "ModuleCategoryID": "QUATPUMP",
+      "IndexWithinRole": 0,
+      "RapidControlStatus": {
+        "CombinedStatus": {
+          "Mode": "ISO",
+          "Flow": 0,
+          "PercentB": 0,
+          "PercentC": 0,
+          "PercentD": 0,
+          "MinimumPressureLimit": 0,
+          "MaximumPressureLimit": 400.0330947751624,
+          "Pressure": 0,
+          "PumpOn": false,
+          "Channel": 0,
+          "ModuleState": "Offline",
+          "IsBusy": false,
+          "IsReady": true,
+          "IsError": false,
+          "KeyLock": false
+        }
+      }
+    },
+    {
+      "ModuleCategoryID": "COLCOMP",
+      "IndexWithinRole": 0,
+      "RapidControlStatus": {
+        "CombinedStatus": {
+          "UseTemperatureControl": false,
+          "OvenOn": false,
+          "Temperature_Actual": 26.22,
+          "Temperature_Room": 27.81,
+          "MaximumTemperatureLimit": 0,
+          "Valve_Position": 0,
+          "Valve_Rotations": 0,
+          "Buzzer": true,
+          "ModuleState": "Offline",
+          "IsBusy": false,
+          "IsReady": true,
+          "IsError": false,
+          "KeyLock": false
+        }
+      }
+    }
+  ]
+}

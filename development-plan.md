@@ -15,10 +15,11 @@
 5. Define a full cycle integration test.
 6. DataProcessor.ProcessMessage: Deserialize message.
 7. Define a Database assembly using entity framework core orm with: entities, configuration, automapper, repository.
+8. Cover Mapper with unit-test.
 
 ### Next:
-- Cover Mapper with unit-test.
-- Define Executor application entrypoint.
+
+- Define Executor with application entrypoint.
 - Define and extract configurations.
 - Cover code with exception handling.
 - Cover code with logging.

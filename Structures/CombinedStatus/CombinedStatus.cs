@@ -5,7 +5,7 @@ namespace Structures.CombinedStatus;
 [XmlInclude(typeof(CombinedSamplerStatus))]
 [XmlInclude(typeof(CombinedPumpStatus))]
 [XmlInclude(typeof(CombinedOvenStatus))]
-public abstract class CombinedStatus
+public class CombinedStatus
 {
     [XmlElement("ModuleState")]
     public string ModuleState { get; set; }

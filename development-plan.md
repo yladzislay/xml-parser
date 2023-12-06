@@ -16,8 +16,15 @@
 
 ### Next:
 
-1. Add a full cycle integration test. 
-2. Define and extract configurations.
+- DataProcessor.ProcessMessage: Deserialize message.
+
+- Define a database scheme.
+- Define DataProcessor.SqlClient.
+
+- Define Executor application entrypoint.
+- Define and extract configurations.
+- Cover code with exception handling.
+- Cover code with logging.
 
 ### Additional:
 

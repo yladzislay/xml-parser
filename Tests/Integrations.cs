@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RabbitMQ;
 using Structures;
+using XmlParser.Helpers;
 using Xunit;
 
 namespace Tests;
@@ -67,7 +68,7 @@ public class Integrations : IAsyncLifetime
         await XmlParser.StartAsync(CancellationToken.None);
         await DataProcessor.StartAsync(CancellationToken.None);
 
-        await Task.Delay(2500);
+        await Task.Delay(5000);
 
         await XmlParser.StopAsync(CancellationToken.None);
         await DataProcessor.StopAsync(CancellationToken.None);
@@ -84,10 +85,10 @@ public class Integrations : IAsyncLifetime
     public async Task DatabaseInteraction()
     {
         var jsonFilePath = Path.Combine("Resources", "status.json");
-        var json = File.ReadAllText(jsonFilePath);
-        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(json);
+        var json = await File.ReadAllTextAsync(jsonFilePath);
+        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(json)?.RandomizeModuleState();
         Assert.NotNull(instrumentStatus);
-            
+        
         var moduleState = instrumentStatus.DeviceStatusList[0].RapidControlStatus.CombinedStatus.ModuleState;
         Assert.NotNull(moduleState);
             

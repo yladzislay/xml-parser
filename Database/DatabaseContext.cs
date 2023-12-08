@@ -13,11 +13,11 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new RapidControlStatusEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new CombinedStatusEntityConfiguration());
         modelBuilder.ApplyConfiguration(new CombinedOvenStatusEntityConfiguration());
         modelBuilder.ApplyConfiguration(new CombinedPumpStatusEntityConfiguration());
         modelBuilder.ApplyConfiguration(new CombinedSamplerStatusEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new CombinedStatusEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new RapidControlStatusEntityConfiguration());
         modelBuilder.ApplyConfiguration(new DeviceStatusEntityConfiguration());
         modelBuilder.ApplyConfiguration(new InstrumentStatusEntityConfiguration());
     }

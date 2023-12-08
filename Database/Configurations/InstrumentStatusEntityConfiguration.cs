@@ -2,15 +2,14 @@ using Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Database.Configurations
+namespace Database.Configurations;
+
+public class InstrumentStatusEntityConfiguration : IEntityTypeConfiguration<InstrumentStatusEntity>
 {
-    public class InstrumentStatusEntityConfiguration : IEntityTypeConfiguration<InstrumentStatusEntity>
+    public void Configure(EntityTypeBuilder<InstrumentStatusEntity> builder)
     {
-        public void Configure(EntityTypeBuilder<InstrumentStatusEntity> builder)
-        {
-            builder.HasKey(e => e.Id);
-            builder.Property(e => e.PackageID);
-            builder.HasMany(e => e.DeviceStatusList).WithOne().HasForeignKey("InstrumentStatusId");
-        }
+        builder.HasKey(instrumentStatusEntity => instrumentStatusEntity.PackageID);
+        builder.HasMany(instrumentStatusEntity => instrumentStatusEntity.DeviceStatusList)
+            .WithOne().HasForeignKey("InstrumentStatusId");
     }
 }

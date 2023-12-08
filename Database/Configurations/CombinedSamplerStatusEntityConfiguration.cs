@@ -16,6 +16,8 @@ namespace Database.Configurations
             builder.Property(e => e.RackR);
             builder.Property(e => e.RackInf);
             builder.Property(e => e.Buzzer);
+            
+            builder.HasBaseType<CombinedStatusEntity>();
         }
     }
 }

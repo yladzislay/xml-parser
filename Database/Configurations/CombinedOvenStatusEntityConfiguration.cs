@@ -8,14 +8,16 @@ namespace Database.Configurations
     {
         public void Configure(EntityTypeBuilder<CombinedOvenStatusEntity> builder)
         {
-            builder.Property(e => e.UseTemperatureControl);
-            builder.Property(e => e.OvenOn);
-            builder.Property(e => e.Temperature_Actual);
-            builder.Property(e => e.Temperature_Room);
-            builder.Property(e => e.MaximumTemperatureLimit);
-            builder.Property(e => e.Valve_Position);
-            builder.Property(e => e.Valve_Rotations);
-            builder.Property(e => e.Buzzer);
+            builder.Property(combinedOvenStatusEntity => combinedOvenStatusEntity.UseTemperatureControl);
+            builder.Property(combinedOvenStatusEntity => combinedOvenStatusEntity.OvenOn);
+            builder.Property(combinedOvenStatusEntity => combinedOvenStatusEntity.Temperature_Actual);
+            builder.Property(combinedOvenStatusEntity => combinedOvenStatusEntity.Temperature_Room);
+            builder.Property(combinedOvenStatusEntity => combinedOvenStatusEntity.MaximumTemperatureLimit);
+            builder.Property(combinedOvenStatusEntity => combinedOvenStatusEntity.Valve_Position);
+            builder.Property(combinedOvenStatusEntity => combinedOvenStatusEntity.Valve_Rotations);
+            builder.Property(combinedOvenStatusEntity => combinedOvenStatusEntity.Buzzer);
+            
+            builder.HasBaseType<CombinedStatusEntity>();
         }
     }
 }

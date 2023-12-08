@@ -8,10 +8,11 @@ namespace Database.Configurations
     {
         public void Configure(EntityTypeBuilder<DeviceStatusEntity> builder)
         {
-            builder.HasKey(e => e.Id);
-            builder.Property(e => e.ModuleCategoryID);
-            builder.Property(e => e.IndexWithinRole);
-            builder.HasOne(e => e.RapidControlStatus).WithOne().HasForeignKey<DeviceStatusEntity>("RapidControlStatusId");
+            builder.HasKey(deviceStatusEntity => deviceStatusEntity.ModuleCategoryID);
+            builder.Property(deviceStatusEntity => deviceStatusEntity.IndexWithinRole);
+            builder.HasOne(deviceStatusEntity => deviceStatusEntity.RapidControlStatus)
+                .WithOne()
+                .HasForeignKey<DeviceStatusEntity>("RapidControlStatusId");
         }
     }
 }

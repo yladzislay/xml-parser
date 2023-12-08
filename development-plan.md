@@ -19,9 +19,11 @@
 9. Make ProcessMessage async with using the Database Repository for save instrument-statuses.
 10. Cover Database.Repository.SaveOrUpdateInstrumentStatusAsync with unit-test with followed fix RapidControlStatusEntity to be without ModuleState property.
 11. Define an Executor assembly with application entrypoint.
+12. Resolve some database scheme mistakes. 
+    - Full scheme save still not worked in reason of not resolved Discriminator at json serialization step and mapper and not finished repository save and update logic.
 
 ### Next:
-
+- Simplify database implementation to meet requirements.
 - Define and extract configurations.
 - Cover code with exception handling.
 - Cover code with logging.

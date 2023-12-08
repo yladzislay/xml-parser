@@ -8,14 +8,9 @@ public class RapidControlStatusEntityConfiguration : IEntityTypeConfiguration<Ra
 {
     public void Configure(EntityTypeBuilder<RapidControlStatusEntity> builder)
     {
-        builder.HasKey(e => e.Id);
-        builder.Property(e => e.IsBusy);
-        builder.Property(e => e.IsReady);
-        builder.Property(e => e.IsError);
-        builder.Property(e => e.KeyLock);
-        builder.HasOne(e => e.CombinedStatus)
+        builder.HasKey(rapidControlStatusEntity => rapidControlStatusEntity.Id);
+        builder.HasOne(rapidControlStatusEntity => rapidControlStatusEntity.CombinedStatus)
             .WithMany()
-            .HasForeignKey("CombinedStatusId")
-            ;
+            .HasForeignKey("CombinedStatusId");
     }
 }

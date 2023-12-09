@@ -1,11 +1,16 @@
 {
   "PackageID": "LicArt62",
-  "DeviceStatusList": [
+  "DeviceStatus": [
     {
       "ModuleCategoryID": "SAMPLER",
       "IndexWithinRole": 0,
       "RapidControlStatus": {
-        "CombinedStatus": {
+        "CombinedSamplerStatus": {
+          "ModuleState": "Online",
+          "IsBusy": false,
+          "IsReady": true,
+          "IsError": false,
+          "KeyLock": false,
           "Status": 0,
           "Vial": "L-A-1",
           "Volume": 0,
@@ -13,12 +18,7 @@
           "RackL": "Tray54C",
           "RackR": "Tray54C",
           "RackInf": 0,
-          "Buzzer": true,
-          "ModuleState": "Online",
-          "IsBusy": false,
-          "IsReady": true,
-          "IsError": false,
-          "KeyLock": false
+          "Buzzer": true
         }
       }
     },
@@ -26,7 +26,12 @@
       "ModuleCategoryID": "QUATPUMP",
       "IndexWithinRole": 0,
       "RapidControlStatus": {
-        "CombinedStatus": {
+        "CombinedPumpStatus": {
+          "ModuleState": "Online",
+          "IsBusy": false,
+          "IsReady": true,
+          "IsError": false,
+          "KeyLock": false,
           "Mode": "ISO",
           "Flow": 0,
           "PercentB": 0,
@@ -36,12 +41,7 @@
           "MaximumPressureLimit": 400.0330947751624,
           "Pressure": 0,
           "PumpOn": false,
-          "Channel": 0,
-          "ModuleState": "Offline",
-          "IsBusy": false,
-          "IsReady": true,
-          "IsError": false,
-          "KeyLock": false
+          "Channel": 0
         }
       }
     },
@@ -49,7 +49,12 @@
       "ModuleCategoryID": "COLCOMP",
       "IndexWithinRole": 0,
       "RapidControlStatus": {
-        "CombinedStatus": {
+        "CombinedOvenStatus": {
+          "ModuleState": "Online",
+          "IsBusy": false,
+          "IsReady": true,
+          "IsError": false,
+          "KeyLock": false,
           "UseTemperatureControl": false,
           "OvenOn": false,
           "Temperature_Actual": 26.22,
@@ -57,12 +62,7 @@
           "MaximumTemperatureLimit": 0,
           "Valve_Position": 0,
           "Valve_Rotations": 0,
-          "Buzzer": true,
-          "ModuleState": "Offline",
-          "IsBusy": false,
-          "IsReady": true,
-          "IsError": false,
-          "KeyLock": false
+          "Buzzer": true
         }
       }
     }

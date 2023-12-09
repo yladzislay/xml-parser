@@ -48,6 +48,7 @@ public class Integrations : IAsyncLifetime
         DbContext = serviceProvider.GetRequiredService<DatabaseContext>();
         Repository = serviceProvider.GetRequiredService<Repository>();
 
+        DbContext.Database.EnsureDeleted();
         DbContext.Database.EnsureCreated();
         DbContext.Database.Migrate();
 

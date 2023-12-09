@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ;
 using Structures;
-using Structures.CombinedStatus;
+using Structures.CombinedStatuses;
 using XmlParser;
 using Xunit;
 
@@ -21,18 +21,18 @@ public class XmlParserUnits
         Assert.NotNull(instrumentStatus);
         Assert.IsType<InstrumentStatus>(instrumentStatus);
 
-        Assert.NotNull(instrumentStatus.DeviceStatusList);
-        Assert.NotEmpty(instrumentStatus.DeviceStatusList);
+        Assert.NotNull(instrumentStatus.DeviceStatuses);
+        Assert.NotEmpty(instrumentStatus.DeviceStatuses);
 
-        var firstDeviceStatus = instrumentStatus.DeviceStatusList[0];
+        var firstDeviceStatus = instrumentStatus.DeviceStatuses[0];
         Assert.NotNull(firstDeviceStatus.RapidControlStatus);
         Assert.IsType<CombinedSamplerStatus>(firstDeviceStatus.RapidControlStatus.CombinedStatus);
 
-        var secondDeviceStatus = instrumentStatus.DeviceStatusList[1];
+        var secondDeviceStatus = instrumentStatus.DeviceStatuses[1];
         Assert.NotNull(secondDeviceStatus.RapidControlStatus);
         Assert.IsType<CombinedPumpStatus>(secondDeviceStatus.RapidControlStatus.CombinedStatus);
 
-        var thirdDeviceStatus = instrumentStatus.DeviceStatusList[2];
+        var thirdDeviceStatus = instrumentStatus.DeviceStatuses[2];
         Assert.NotNull(thirdDeviceStatus.RapidControlStatus);
         Assert.IsType<CombinedOvenStatus>(thirdDeviceStatus.RapidControlStatus.CombinedStatus);
     }

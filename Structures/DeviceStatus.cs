@@ -1,16 +1,13 @@
-using System.Xml.Serialization;
+using System.Text.Json.Serialization;
+using Structures.Helpers;
 
-namespace Structures
+namespace Structures;
+
+public class DeviceStatus
 {
-    public class DeviceStatus
-    {
-        [XmlElement("ModuleCategoryID")]
-        public string ModuleCategoryID { get; set; }
-
-        [XmlElement("IndexWithinRole")]
-        public int IndexWithinRole { get; set; }
-
-        [XmlElement("RapidControlStatus")]
-        public RapidControlStatus RapidControlStatus { get; set; }
-    }
+    public string ModuleCategoryID { get; set; }
+    public int IndexWithinRole { get; set; }
+        
+    [JsonConverter(typeof(RapidControlStatusJsonConverter))]
+    public RapidControlStatus RapidControlStatus { get; set; }
 }

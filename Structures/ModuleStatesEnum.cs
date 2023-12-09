@@ -1,4 +1,4 @@
-namespace Structures.CombinedStatus;
+namespace Structures;
 
 public enum ModuleStatesEnum
 {

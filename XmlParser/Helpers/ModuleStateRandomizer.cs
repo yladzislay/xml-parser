@@ -1,5 +1,4 @@
 using Structures;
-using Structures.CombinedStatus;
 
 namespace XmlParser.Helpers;
 
@@ -15,8 +14,8 @@ public static class ModuleStateRandomizer
     
     public static InstrumentStatus RandomizeModuleState(this InstrumentStatus instrumentStatus)
     {
-        foreach (var deviceStatus in instrumentStatus.DeviceStatusList)
-            deviceStatus.RapidControlStatus.CombinedStatus.ModuleState = GetRandomModuleState();
+        foreach (var deviceStatus in instrumentStatus.DeviceStatuses)
+                deviceStatus.RapidControlStatus.CombinedStatus.ModuleState = GetRandomModuleState();
 
         return instrumentStatus;
     }

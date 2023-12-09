@@ -1,5 +1,5 @@
 using System.Xml.Serialization;
-using Structures.CombinedStatus;
+using Structures.CombinedStatuses;
 
 namespace Structures;
 
@@ -9,5 +9,5 @@ public class RapidControlStatus
     [XmlElement("CombinedSamplerStatus", Type = typeof(CombinedSamplerStatus))]
     [XmlElement("CombinedPumpStatus", Type = typeof(CombinedPumpStatus))]
     [XmlElement("CombinedOvenStatus", Type = typeof(CombinedOvenStatus))]
-    public CombinedStatus.CombinedStatus CombinedStatus { get; set; }
+    public CombinedStatus? CombinedStatus { get; set; }
 }

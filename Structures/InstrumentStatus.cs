@@ -1,14 +1,13 @@
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
-namespace Structures
-{
-    [XmlRoot("InstrumentStatus")]
-    public class InstrumentStatus
-    {
-        [XmlElement("PackageID")]
-        public string PackageID { get; set; }
+namespace Structures;
 
-        [XmlElement("DeviceStatus")]
-        public List<DeviceStatus> DeviceStatusList { get; set; }
-    }
+public class InstrumentStatus
+{
+    public string PackageID { get; set; }
+
+    [XmlElement("DeviceStatus")]
+    [JsonPropertyName("DeviceStatus")]
+    public List<DeviceStatus> DeviceStatuses { get; set; }
 }

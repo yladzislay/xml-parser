@@ -89,7 +89,7 @@ public class Integrations : IAsyncLifetime
         var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(json)?.RandomizeModuleState();
         Assert.NotNull(instrumentStatus);
         
-        var moduleState = instrumentStatus.DeviceStatusList[0].RapidControlStatus.CombinedStatus.ModuleState;
+        var moduleState = instrumentStatus.DeviceStatuses[0].RapidControlStatus.CombinedStatus.ModuleState;
         Assert.NotNull(moduleState);
             
         await Repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);

@@ -1,7 +1,7 @@
 using AutoMapper;
 using Database.Entities;
 using Structures;
-using Structures.CombinedStatus;
+using Structures.CombinedStatuses;
 
 namespace Database;
 
@@ -18,14 +18,7 @@ public class AutoMapperProfile : Profile
             .Include<CombinedPumpStatus, CombinedPumpStatusEntity>()
             .Include<CombinedOvenStatus, CombinedOvenStatusEntity>();
 
-        CreateMap<RapidControlStatus, RapidControlStatusEntity>()
-            .ForMember
-            (
-                rapidControlStatusEntity => rapidControlStatusEntity.CombinedStatus, 
-                memberConfigurationExpression => memberConfigurationExpression
-                    .MapFrom(src => src.CombinedStatus)
-            );
-
+        CreateMap<RapidControlStatus, RapidControlStatusEntity>();
         CreateMap<DeviceStatus, DeviceStatusEntity>();
         CreateMap<InstrumentStatus, InstrumentStatusEntity>();
     }

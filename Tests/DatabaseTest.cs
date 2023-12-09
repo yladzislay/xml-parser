@@ -61,23 +61,27 @@ public class DatabaseTest : IAsyncLifetime
         var jsonFilePath = Path.Combine("Resources", "status.json");
         var json = await File.ReadAllTextAsync(jsonFilePath);
         var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(json)?.RandomizeModuleState();
+        
         Assert.NotNull(instrumentStatus);
         
         var moduleState = instrumentStatus.DeviceStatuses[0].RapidControlStatus.CombinedStatus?.ModuleState;
+        
         Assert.NotNull(moduleState);
             
         await Repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);
 
-        var savedInstrumentStatus = await DbContext.InstrumentStatuses
+        var savedInstrumentStatusEntity = await DbContext.InstrumentStatuses
             .Include(instrumentStatusEntity => instrumentStatusEntity.DeviceStatuses)
             .ThenInclude(deviceStatusEntity => deviceStatusEntity.RapidControlStatus)
             .ThenInclude(rapidControlStatusEntity => rapidControlStatusEntity.CombinedStatus)
             .FirstOrDefaultAsync(x => x.PackageID == instrumentStatus.PackageID);
-        Assert.NotNull(savedInstrumentStatus);
+        
+        Assert.NotNull(savedInstrumentStatusEntity);
             
-        var savedModuleState = savedInstrumentStatus.DeviceStatuses[0].RapidControlStatus.CombinedStatus.ModuleState;
+        var savedModuleState = savedInstrumentStatusEntity.DeviceStatuses[0].RapidControlStatus.CombinedStatus.ModuleState;
+        
         Assert.NotNull(savedModuleState);
-            
+        
         Assert.Equal(moduleState, savedModuleState);
     }
 }

@@ -1,7 +1,7 @@
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 using RabbitMQ;
 using XmlParser.Helpers;
 
@@ -53,7 +53,7 @@ namespace XmlParser
         private void ProcessXml(string xml)
         {
             var instrumentStatus = Parser.ParseInstrumentStatus(xml)?.RandomizeModuleState();
-            var jsonInstrumentStatus = JsonConvert.SerializeObject(instrumentStatus);
+            var jsonInstrumentStatus = JsonSerializer.Serialize(instrumentStatus);
             RabbitMqClient.PublishMessage(jsonInstrumentStatus);
         }
     }

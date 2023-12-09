@@ -6,5 +6,6 @@ public class InstrumentStatusEntity
 {
     [Key]
     public string PackageID { get; set; }
-    public List<DeviceStatusEntity> DeviceStatusList { get; set; }
+    
+    public List<DeviceStatusEntity> DeviceStatuses { get; set; }
 }

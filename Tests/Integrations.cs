@@ -96,13 +96,13 @@ public class Integrations : IAsyncLifetime
         await Repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);
 
         var savedInstrumentStatus = await DbContext.InstrumentStatuses
-            .Include(instrumentStatusEntity => instrumentStatusEntity.DeviceStatusList)
+            .Include(instrumentStatusEntity => instrumentStatusEntity.DeviceStatuses)
             .ThenInclude(deviceStatusEntity => deviceStatusEntity.RapidControlStatus)
             .ThenInclude(rapidControlStatusEntity => rapidControlStatusEntity.CombinedStatus)
             .FirstOrDefaultAsync(x => x.PackageID == instrumentStatus.PackageID);
         Assert.NotNull(savedInstrumentStatus);
             
-        var savedModuleState = savedInstrumentStatus.DeviceStatusList[0].RapidControlStatus.CombinedStatus.ModuleState;
+        var savedModuleState = savedInstrumentStatus.DeviceStatuses[0].RapidControlStatus.CombinedStatus.ModuleState;
         Assert.NotNull(savedModuleState);
             
         Assert.Equal(moduleState, savedModuleState);

@@ -3,7 +3,7 @@ using AutoMapper;
 using Database;
 using Database.Entities;
 using Structures;
-using Structures.CombinedStatuses;
+using XmlParser.Helpers;
 using Xunit;
 
 namespace Tests;
@@ -26,33 +26,31 @@ public class AutoMapperTest
     {
         var jsonFilePath = Path.Combine("Resources", "status.json");
         var json = File.ReadAllText(jsonFilePath);
-        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(json);
-        Assert.NotNull(instrumentStatus);
-            
+        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(json)?.RandomizeModuleState();
         var instrumentStatusEntity = _mapper.Map<InstrumentStatusEntity>(instrumentStatus);
-        Assert.NotNull(instrumentStatusEntity);
-        Assert.Equal(instrumentStatus.PackageID, instrumentStatusEntity.PackageID);
-            
-        var moduleState = instrumentStatus.DeviceStatuses[0].RapidControlStatus.CombinedStatus?.ModuleState;
-        Assert.NotNull(moduleState);
-            
-        var mappedModuleState = instrumentStatusEntity.DeviceStatusList[0].RapidControlStatus.CombinedStatus.ModuleState;
-        Assert.NotNull(mappedModuleState);
-        Assert.Equal(moduleState, mappedModuleState);
-            
+        
         Assert.NotNull(instrumentStatus);
-        Assert.NotNull(instrumentStatus.DeviceStatuses);
+        Assert.NotNull(instrumentStatusEntity);
         
-        var firstDeviceStatus = instrumentStatus?.DeviceStatuses[0];
-        var secondDeviceStatus = instrumentStatus?.DeviceStatuses[1];
-        var thirdDeviceStatus = instrumentStatus?.DeviceStatuses[2];
+        var firstDeviceStatus = instrumentStatusEntity.DeviceStatuses[0];
+        var secondDeviceStatus = instrumentStatusEntity.DeviceStatuses[1];
+        var thirdDeviceStatus = instrumentStatusEntity.DeviceStatuses[2];
         
-        Assert.NotNull(firstDeviceStatus?.RapidControlStatus);
-        Assert.NotNull(secondDeviceStatus?.RapidControlStatus);
-        Assert.NotNull(thirdDeviceStatus?.RapidControlStatus);
+        Assert.NotNull(firstDeviceStatus.RapidControlStatus.CombinedStatus);
+        Assert.NotNull(secondDeviceStatus.RapidControlStatus.CombinedStatus);
+        Assert.NotNull(thirdDeviceStatus.RapidControlStatus.CombinedStatus);
         
-        Assert.IsType<CombinedSamplerStatus>(firstDeviceStatus.RapidControlStatus.CombinedStatus);
-        Assert.IsType<CombinedPumpStatus>(secondDeviceStatus.RapidControlStatus.CombinedStatus);
-        Assert.IsType<CombinedOvenStatus>(thirdDeviceStatus.RapidControlStatus.CombinedStatus);
+        Assert.IsType<CombinedSamplerStatusEntity>(firstDeviceStatus.RapidControlStatus.CombinedStatus);
+        Assert.IsType<CombinedPumpStatusEntity>(secondDeviceStatus.RapidControlStatus.CombinedStatus);
+        Assert.IsType<CombinedOvenStatusEntity>(thirdDeviceStatus.RapidControlStatus.CombinedStatus);
+        
+        for (var index = 0; index < instrumentStatusEntity.DeviceStatuses.Count; index++)
+        {
+            var moduleState = instrumentStatus.DeviceStatuses[index].RapidControlStatus.CombinedStatus?.ModuleState;
+            var mappedModuleState = instrumentStatusEntity.DeviceStatuses[index].RapidControlStatus.CombinedStatus.ModuleState;
+            Assert.NotNull(moduleState);
+            Assert.NotNull(mappedModuleState);
+            Assert.Equal(moduleState, mappedModuleState);
+        }
     }
 }

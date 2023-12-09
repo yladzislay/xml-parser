@@ -1,21 +1,21 @@
+using System.Text.Json;
 using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RabbitMQ;
+using Structures;
+using XmlParser.Helpers;
 using Xunit;
 
 namespace Tests;
 
-public class Integrations : IAsyncLifetime
+public class DatabaseTest : IAsyncLifetime
 {
-    private RabbitMqClient RabbitMqClient { get; set; } = null!;
-    private XmlParser.Microservice XmlParser { get; set; } = null!;
-    private DataProcessor.Microservice DataProcessor { get; set; } = null!;
     private DatabaseContext DbContext { get; set; } = null!;
     private Repository Repository { get; set; } = null!;
-
+    
     public Task InitializeAsync()
     {
         var configuration = new ConfigurationBuilder().Build();
@@ -30,7 +30,7 @@ public class Integrations : IAsyncLifetime
             .AddAutoMapper(typeof(AutoMapperProfile))
             .AddDbContext<DatabaseContext>(options =>
             {
-                options.UseSqlite("Data Source=integration-full-cycle-test.sqlite");
+                options.UseSqlite("Data Source=database-unit-test.sqlite");
             })
             .AddScoped<Repository>()
             .AddSingleton<RabbitMqClient>()
@@ -39,9 +39,6 @@ public class Integrations : IAsyncLifetime
 
         var serviceProvider = serviceCollection.BuildServiceProvider();
 
-        RabbitMqClient = serviceProvider.GetRequiredService<RabbitMqClient>();
-        XmlParser = serviceProvider.GetRequiredService<XmlParser.Microservice>();
-        DataProcessor = serviceProvider.GetRequiredService<DataProcessor.Microservice>();
         DbContext = serviceProvider.GetRequiredService<DatabaseContext>();
         Repository = serviceProvider.GetRequiredService<Repository>();
 
@@ -57,25 +54,30 @@ public class Integrations : IAsyncLifetime
         DbContext.Dispose();
         return Task.CompletedTask;
     }
-
+    
     [Fact]
-    public async Task FullCycle()
+    public async Task DatabaseInteraction()
     {
-        Assert.True(RabbitMqClient.IsConnected());
+        var jsonFilePath = Path.Combine("Resources", "status.json");
+        var json = await File.ReadAllTextAsync(jsonFilePath);
+        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(json)?.RandomizeModuleState();
+        Assert.NotNull(instrumentStatus);
+        
+        var moduleState = instrumentStatus.DeviceStatuses[0].RapidControlStatus.CombinedStatus?.ModuleState;
+        Assert.NotNull(moduleState);
+            
+        await Repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);
 
-        await XmlParser.StartAsync(CancellationToken.None);
-        await DataProcessor.StartAsync(CancellationToken.None);
-
-        await Task.Delay(5000);
-
-        await XmlParser.StopAsync(CancellationToken.None);
-        await DataProcessor.StopAsync(CancellationToken.None);
-
-        var publishedMessagesCount = XmlParser.GetPublishedMessagesCount();
-        var processedMessagesCount = DataProcessor.GetReceivedMessagesCount();
-
-        Assert.NotEqual(0, publishedMessagesCount);
-        Assert.NotEqual(0, processedMessagesCount);
-        Assert.Equal(publishedMessagesCount, processedMessagesCount);
+        var savedInstrumentStatus = await DbContext.InstrumentStatuses
+            .Include(instrumentStatusEntity => instrumentStatusEntity.DeviceStatuses)
+            .ThenInclude(deviceStatusEntity => deviceStatusEntity.RapidControlStatus)
+            .ThenInclude(rapidControlStatusEntity => rapidControlStatusEntity.CombinedStatus)
+            .FirstOrDefaultAsync(x => x.PackageID == instrumentStatus.PackageID);
+        Assert.NotNull(savedInstrumentStatus);
+            
+        var savedModuleState = savedInstrumentStatus.DeviceStatuses[0].RapidControlStatus.CombinedStatus.ModuleState;
+        Assert.NotNull(savedModuleState);
+            
+        Assert.Equal(moduleState, savedModuleState);
     }
 }

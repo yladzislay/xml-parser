@@ -13,8 +13,7 @@ public class JsonSerializerTest
     {
         var jsonFilePath = Path.Combine("Resources", "status.json");
         var json = File.ReadAllText(jsonFilePath);
-        var jsonSerializerOptions = new JsonSerializerOptions { Converters = { new RapidControlStatusJsonConverter() }};
-        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(json, jsonSerializerOptions);
+        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(json);
         var firstDeviceStatus = instrumentStatus?.DeviceStatuses[0];
         var secondDeviceStatus = instrumentStatus?.DeviceStatuses[1];
         var thirdDeviceStatus = instrumentStatus?.DeviceStatuses[2];

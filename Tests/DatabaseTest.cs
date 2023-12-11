@@ -79,9 +79,23 @@ public class DatabaseTest : IAsyncLifetime
         Assert.NotNull(savedInstrumentStatusEntity);
             
         var savedModuleState = savedInstrumentStatusEntity.DeviceStatuses[0].RapidControlStatus.CombinedStatus.ModuleState;
-        
         Assert.NotNull(savedModuleState);
+        Assert.Equal(moduleState, savedModuleState);
+
+        instrumentStatus.RandomizeModuleState();
+        moduleState = instrumentStatus.DeviceStatuses[0].RapidControlStatus.CombinedStatus?.ModuleState;
+        await Repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);
+
+        savedInstrumentStatusEntity = await DbContext.InstrumentStatuses
+            .Include(instrumentStatusEntity => instrumentStatusEntity.DeviceStatuses)
+            .ThenInclude(deviceStatusEntity => deviceStatusEntity.RapidControlStatus)
+            .ThenInclude(rapidControlStatusEntity => rapidControlStatusEntity.CombinedStatus)
+            .FirstOrDefaultAsync(x => x.PackageID == instrumentStatus.PackageID);
         
+        Assert.NotNull(savedInstrumentStatusEntity);
+            
+        savedModuleState = savedInstrumentStatusEntity.DeviceStatuses[0].RapidControlStatus.CombinedStatus.ModuleState;
+        Assert.NotNull(savedModuleState);
         Assert.Equal(moduleState, savedModuleState);
     }
 }

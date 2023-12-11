@@ -36,6 +36,10 @@ public class Executor
             })
             .Build();
 
+        using var scope = host.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        await dbContext.Database.EnsureCreatedAsync();
+
         await host.RunAsync();
     }
 }

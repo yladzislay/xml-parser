@@ -31,7 +31,8 @@
 
 ### Additional possible improvements:
 
-1. Collect messages if RabbitMQ connection lost. (XmlParser level.)
-2. Collect messages if database connection lost. (DataProcessor level.)
-3. Ability to setup xml files folder with configuration. (Executor level.)
-4. Check that xml-files folder is not empty. (Executor level.)
+- Include Executor to FullCycle integration test.
+- Collect messages if RabbitMQ connection lost. (XmlParser level.)
+- Collect messages if database connection lost. (DataProcessor level.)
+- Ability to setup xml files folder with configuration. (Executor level.)
+- Check that xml-files folder is not empty. (Executor level.)

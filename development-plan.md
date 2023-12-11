@@ -22,6 +22,10 @@
 12. Resolve some database scheme mistakes. 
     - Full scheme save still not worked in reason of not resolved Discriminator at json serialization step and mapper and not finished repository save and update logic.
 13. Skip the "Simplify database implementation to meet requirements" and resolve full structure database scheme with save and update records.
+14. Executor assembly:
+    - Setup as execution console application. 
+    - Include Xml resources. 
+    - Setup appsettings.json as embedded resource.
 
 ### Next:
 

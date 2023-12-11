@@ -21,14 +21,15 @@
 11. Define an Executor assembly with application entrypoint.
 12. Resolve some database scheme mistakes. 
     - Full scheme save still not worked in reason of not resolved Discriminator at json serialization step and mapper and not finished repository save and update logic.
+13. Skip the "Simplify database implementation to meet requirements" and resolve full structure database scheme with save and update records.
 
 ### Next:
-- Simplify database implementation to meet requirements.
+
 - Define and extract configurations.
 - Cover code with exception handling.
 - Cover code with logging.
 
-### Additional:
+### Additional possible improvements:
 
 1. Collect messages if RabbitMQ connection lost. (XmlParser level.)
 2. Collect messages if database connection lost. (DataProcessor level.)

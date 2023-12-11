@@ -10,9 +10,7 @@ namespace Database.Configurations
         {
             builder.HasKey(deviceStatusEntity => deviceStatusEntity.ModuleCategoryID);
             builder.Property(deviceStatusEntity => deviceStatusEntity.IndexWithinRole);
-            builder.HasOne(deviceStatusEntity => deviceStatusEntity.RapidControlStatus)
-                .WithOne()
-                .HasForeignKey<DeviceStatusEntity>("RapidControlStatusId");
+            builder.HasOne(deviceStatusEntity => deviceStatusEntity.RapidControlStatus);
         }
     }
 }

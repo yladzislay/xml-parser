@@ -9,7 +9,6 @@ public class InstrumentStatusEntityConfiguration : IEntityTypeConfiguration<Inst
     public void Configure(EntityTypeBuilder<InstrumentStatusEntity> builder)
     {
         builder.HasKey(instrumentStatusEntity => instrumentStatusEntity.PackageID);
-        builder.HasMany(instrumentStatusEntity => instrumentStatusEntity.DeviceStatusList)
-            .WithOne().HasForeignKey("InstrumentStatusId");
+        builder.HasMany(instrumentStatusEntity => instrumentStatusEntity.DeviceStatuses);
     }
 }

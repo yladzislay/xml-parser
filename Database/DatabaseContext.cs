@@ -7,8 +7,8 @@ namespace Database;
 public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
 {
     public DbSet<InstrumentStatusEntity> InstrumentStatuses { get; set; }
-    public DbSet<RapidControlStatusEntity> RapidControlStatuses { get; set; }
     public DbSet<DeviceStatusEntity> DeviceStatuses { get; set; }
+    public DbSet<RapidControlStatusEntity> RapidControlStatuses { get; set; }
     public DbSet<CombinedStatusEntity> CombinedStatuses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

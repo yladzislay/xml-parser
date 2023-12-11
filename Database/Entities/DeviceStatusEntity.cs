@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Database.Entities;
 
@@ -9,6 +8,6 @@ public class DeviceStatusEntity
     public string ModuleCategoryID { get; set; }
     public int IndexWithinRole { get; set; }
     
-    [ForeignKey("RapidControlStatusId")]
+    public InstrumentStatusEntity InstrumentStatus { get; set; }
     public RapidControlStatusEntity RapidControlStatus { get; set; }
 }

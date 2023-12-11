@@ -7,6 +7,8 @@ public class RapidControlStatusEntity
 {
     [Key]
     public int Id { get; set; }
-    [ForeignKey("CombinedStatusId")]
+    
+    [ForeignKey("DeviceStatusId")]
+    public DeviceStatusEntity DeviceStatus { get; set; }
     public CombinedStatusEntity CombinedStatus { get; set; }
 }

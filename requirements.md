@@ -16,8 +16,8 @@
 ### 2. DataProcessor Service
 - [x] Сервис, который принимает сообщения из RabbitMQ и обрабатывает данные. 
 - [x] Сохраняет результаты обработки в базу данных (возможно использование локальной БД). 
-- [ ] Сохраняет поля `ModuleCategoryID` и `ModuleState`.
-- [ ] Если `ModuleCategoryID` уже существует в БД, обновляет только `ModuleState`.
+- [x] Сохраняет поля `ModuleCategoryID` и `ModuleState`.
+- [x] Если `ModuleCategoryID` уже существует в БД, обновляет только `ModuleState`.
 
 ### 3. RabbitMQ
 - [x] Используется для связи между FileParser и DataProcessor сервисами.

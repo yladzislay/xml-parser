@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Tests;
 
-public class Integrations : IAsyncLifetime
+public class IntegrationTest : IAsyncLifetime
 {
     private RabbitMqClient RabbitMqClient { get; set; } = null!;
     private XmlParser.Microservice XmlParser { get; set; } = null!;

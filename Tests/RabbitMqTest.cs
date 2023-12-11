@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Tests
 {
-    public class RabbitMqUnits : IAsyncLifetime
+    public class RabbitMqTest : IAsyncLifetime
     {
         private IServiceProvider? _serviceProvider;
         private RabbitMqClient? RabbitMqClient { get; set; }
@@ -29,13 +29,13 @@ namespace Tests
         }
 
         [Fact]
-        public void RabbitMqClient_ShouldConnectSuccessfully()
+        public void ShouldBeSuccessfullyConnected()
         {
             Assert.True(RabbitMqClient?.IsConnected());
         }
 
         [Fact]
-        public async Task RabbitMqClient_ShouldPublishMessageSuccessfully()
+        public async Task MessageShouldBeSuccessfullyPublished()
         {
             const string message = "test_message";
             Assert.True(RabbitMqClient?.IsConnected());

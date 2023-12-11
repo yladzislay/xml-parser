@@ -66,7 +66,7 @@ public class Integrations : IAsyncLifetime
         await XmlParser.StartAsync(CancellationToken.None);
         await DataProcessor.StartAsync(CancellationToken.None);
 
-        await Task.Delay(5000);
+        await Task.Delay(5500);
 
         await XmlParser.StopAsync(CancellationToken.None);
         await DataProcessor.StopAsync(CancellationToken.None);

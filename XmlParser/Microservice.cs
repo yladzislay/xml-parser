@@ -5,56 +5,67 @@ using Microsoft.Extensions.Hosting;
 using RabbitMQ;
 using XmlParser.Helpers;
 
-namespace XmlParser
-{
-    public class Microservice(
+namespace XmlParser;
+
+public class Microservice
+    (
         IConfiguration configuration,
         ILogger<Microservice> logger,
         RabbitMqClient rabbitMqClient
-    ) : IHostedService, IDisposable
+    ) 
+    : IHostedService, IDisposable
+{
+    private int _publishedMessagesCount;
+    private string XmlFilesDirectory { get; } = configuration["XmlParser:XmlDirectory"] ?? "Resources";
+    private ILogger<Microservice> Logger { get; } = logger;
+    private RabbitMqClient RabbitMqClient { get; } = rabbitMqClient;
+    private Timer? LoadXmlFilesTimer { get; set; }
+
+    public Task StartAsync(CancellationToken cancellationToken)
     {
-        private int _publishedMessagesCount;
-        private string XmlFilesDirectory { get; } = configuration["XmlParser:XmlDirectory"] ?? "Resources";
-        private ILogger<Microservice> Logger { get; } = logger;
-        private RabbitMqClient RabbitMqClient { get; } = rabbitMqClient;
-        private Timer? LoadXmlFilesTimer { get; set; }
+        LoadXmlFilesTimer = new Timer(_ => LoadAndProcessXmlFiles(), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+        Logger.LogInformation("Microservice has been started.");
+        return Task.CompletedTask;
+    }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        LoadXmlFilesTimer?.Change(Timeout.Infinite, 0);
+        Logger.LogInformation("Microservice has been stopped.");
+        return Task.CompletedTask;
+    }
+
+    public void Dispose() => LoadXmlFilesTimer?.Dispose();
+
+    public int GetPublishedMessagesCount() => _publishedMessagesCount;
+
+    private void LoadAndProcessXmlFiles()
+    {
+        var xmlFilesPaths = Directory.GetFiles(XmlFilesDirectory, "*.xml");
+        if (xmlFilesPaths.Length == 0)
         {
-            LoadXmlFilesTimer = new Timer(_ => LoadAndProcessXmlFiles(), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-            return Task.CompletedTask;
+            Logger.LogWarning("No XML files found in the setup directory [{XmlFilesDirectory}].", XmlFilesDirectory);
+            return;
         }
+        foreach (var xmlFilePath in xmlFilesPaths) Task.Run(() => ProcessXmlFileAsync(xmlFilePath));
+    }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+    private async Task ProcessXmlFileAsync(string xmlFilePath)
+    {
+        var fileName = xmlFilePath.TrimEnd('/');
+        
+        try
         {
-            LoadXmlFilesTimer?.Change(Timeout.Infinite, 0);
-            return Task.CompletedTask;
-        }
-
-        public void Dispose() => LoadXmlFilesTimer?.Dispose();
-
-        public int GetPublishedMessagesCount() => _publishedMessagesCount;
-
-        private void LoadAndProcessXmlFiles()
-        {
-            var xmlFilesPaths = Directory.GetFiles(XmlFilesDirectory, "*.xml");
-
-            foreach (var xmlFilePath in xmlFilesPaths)
-            {
-                Task.Run(async () =>
-                {
-                    var xml = await File.ReadAllTextAsync(xmlFilePath);
-                    ProcessXml(xml);
-                    Interlocked.Increment(ref _publishedMessagesCount);
-                });
-            }
-        }
-
-        private void ProcessXml(string xml)
-        {
+            var xml = await File.ReadAllTextAsync(xmlFilePath);
             var instrumentStatus = Parser.ParseInstrumentStatus(xml)?.RandomizeModuleState();
             var jsonInstrumentStatus = JsonSerializer.Serialize(instrumentStatus);
             RabbitMqClient.PublishMessage(jsonInstrumentStatus);
+            Logger.LogInformation("The {FileName} has been successfully parsed & published.", fileName);
+            Interlocked.Increment(ref _publishedMessagesCount);
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Error processing XML file [{FileName}].", fileName);
         }
     }
 }

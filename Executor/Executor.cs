@@ -24,6 +24,7 @@ public class Executor
                 {
                     builder.AddConsole();
                     builder.AddDebug();
+                    builder.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
                 });
                 services.AddSingleton(context.Configuration);
                 services.AddAutoMapper(typeof(AutoMapperProfile));

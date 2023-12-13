@@ -12,29 +12,50 @@ public class Microservice
         ILogger<Microservice> logger,
         RabbitMqClient rabbitMqClient, 
         Repository repository
-    ) : IHostedService
+    ) 
+    : IHostedService
 {
     private int ReceivedMessagesCount { get; set; }
     public int GetReceivedMessagesCount() => ReceivedMessagesCount;
     
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        logger.LogInformation("DataProcessorMicroservice is starting.");
         rabbitMqClient.SubscribeForMessages(ProcessMessageAsync);
+        logger.LogInformation("Microservice has been started.");
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        logger.LogInformation("DataProcessorMicroservice is stopping.");
+        logger.LogInformation("Microservice has been stopped.");
         return Task.CompletedTask;
     }
 
     private async void ProcessMessageAsync(string message)
     {
-        ReceivedMessagesCount++;
-        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(message);
-        if (instrumentStatus == null) return;
-        await repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);
+        try
+        {
+            ReceivedMessagesCount++;
+            var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(message);
+            if (instrumentStatus == null) return;
+            await repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);
+            
+            var loggingInformationMessage = $"Incoming instrument-status has been successfully deserialized " +
+                                     $"& saved to database with next module states:{Environment.NewLine}";
+
+            foreach (var device in instrumentStatus.DeviceStatuses)
+            {
+                loggingInformationMessage += $"[{instrumentStatus.PackageID}]" +
+                                      $"[{device.ModuleCategoryID}]" +
+                                      $"[{device.RapidControlStatus.CombinedStatus?.ModuleState}]" +
+                                      $"{Environment.NewLine}";
+            }
+
+            logger.LogInformation("{LoggingInformationMessage}", loggingInformationMessage);
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Error processing incoming message.");
+        }
     }
 }

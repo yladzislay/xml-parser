@@ -24,14 +24,14 @@ public class Microservice
     public Task StartAsync(CancellationToken cancellationToken)
     {
         LoadXmlFilesTimer = new Timer(_ => LoadAndProcessXmlFiles(), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-        Logger.LogInformation("Microservice has started.");
+        Logger.LogInformation("Microservice has been started.");
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
         LoadXmlFilesTimer?.Change(Timeout.Infinite, 0);
-        Logger.LogInformation("Microservice has stopped.");
+        Logger.LogInformation("Microservice has been stopped.");
         return Task.CompletedTask;
     }
 
@@ -57,11 +57,10 @@ public class Microservice
         try
         {
             var xml = await File.ReadAllTextAsync(xmlFilePath);
-            Logger.LogInformation("The {FileName} has loaded.", fileName);
             var instrumentStatus = Parser.ParseInstrumentStatus(xml)?.RandomizeModuleState();
             var jsonInstrumentStatus = JsonSerializer.Serialize(instrumentStatus);
             RabbitMqClient.PublishMessage(jsonInstrumentStatus);
-            Logger.LogInformation("The {FileName} has published.", fileName);
+            Logger.LogInformation("The {FileName} has been successfully parsed & published.", fileName);
             Interlocked.Increment(ref _publishedMessagesCount);
         }
         catch (Exception exception)

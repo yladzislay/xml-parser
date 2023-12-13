@@ -33,22 +33,29 @@ public class Microservice
 
     private async void ProcessMessageAsync(string message)
     {
-        ReceivedMessagesCount++;
-        var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(message);
-        if (instrumentStatus == null) return;
-        await repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);
-        
-        var loggingInformationMessage = $"Incoming instrument-status has been successfully deserialized " +
-                                 $"& saved to database with next module states:{Environment.NewLine}";
-
-        foreach (var device in instrumentStatus.DeviceStatuses)
+        try
         {
-            loggingInformationMessage += $"[{instrumentStatus.PackageID}]" +
-                                  $"[{device.ModuleCategoryID}]" +
-                                  $"[{device.RapidControlStatus.CombinedStatus?.ModuleState}]" +
-                                  $"{Environment.NewLine}";
-        }
+            ReceivedMessagesCount++;
+            var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(message);
+            if (instrumentStatus == null) return;
+            await repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);
+            
+            var loggingInformationMessage = $"Incoming instrument-status has been successfully deserialized " +
+                                     $"& saved to database with next module states:{Environment.NewLine}";
 
-        logger.LogInformation(loggingInformationMessage);
+            foreach (var device in instrumentStatus.DeviceStatuses)
+            {
+                loggingInformationMessage += $"[{instrumentStatus.PackageID}]" +
+                                      $"[{device.ModuleCategoryID}]" +
+                                      $"[{device.RapidControlStatus.CombinedStatus?.ModuleState}]" +
+                                      $"{Environment.NewLine}";
+            }
+
+            logger.LogInformation("{LoggingInformationMessage}", loggingInformationMessage);
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Error processing incoming message.");
+        }
     }
 }

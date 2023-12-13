@@ -31,10 +31,10 @@
     - Setup appsettings.json as embedded resource.
 
 15. Cover XmlParser.Microservice with logging and exception handling.
+16. Cover DataProcessor.Microservice with logging and exception handling.
 
 ### Next:
 
-- Cover DataProcessor.Microservice with logging and exception handling.
 - Define and extract possible configurations.
 
 ### Additional possible improvements:

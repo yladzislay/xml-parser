@@ -25,6 +25,7 @@ public class IntegrationTest : IAsyncLifetime
             {
                 builder.AddConsole();
                 builder.AddDebug();
+                builder.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
             })
             .AddSingleton<IConfiguration>(configuration)
             .AddAutoMapper(typeof(AutoMapperProfile))

@@ -15,8 +15,9 @@ public class Microservice
     ) 
     : IHostedService
 {
-    private int ReceivedMessagesCount { get; set; }
-    public int GetReceivedMessagesCount() => ReceivedMessagesCount;
+    private int _receivedMessagesCount;
+
+    public int GetReceivedMessagesCount() => _receivedMessagesCount;
     
     public Task StartAsync(CancellationToken cancellationToken)
     {
@@ -35,7 +36,7 @@ public class Microservice
     {
         try
         {
-            ReceivedMessagesCount++;
+            Interlocked.Increment(ref _receivedMessagesCount);
             var instrumentStatus = JsonSerializer.Deserialize<InstrumentStatus>(message);
             if (instrumentStatus == null) return;
             await repository.SaveOrUpdateInstrumentStatusAsync(instrumentStatus);

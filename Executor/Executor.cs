@@ -8,7 +8,7 @@ using RabbitMQ;
 
 namespace Executor;
 
-public class Executor
+public static class Executor
 {
     public static async Task Main(string[] args)
     {

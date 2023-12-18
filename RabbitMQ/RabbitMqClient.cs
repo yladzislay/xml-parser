@@ -9,23 +9,24 @@ public class RabbitMqClient : IDisposable
 {
     private readonly IConnection _connection;
     private readonly IModel _channel;
-    private const string QueueName = "InstrumentStatuses";
+    private readonly string _queueName;
 
     public RabbitMqClient(IConfiguration configuration)
     {
         var hostName = configuration["RabbitMQ:HostName"] ?? "localhost";
         var port = int.Parse(configuration["RabbitMQ:Port"] ?? "5672");
+        _queueName = configuration["RabbitMQ:QueueName"] ?? "InstrumentStatuses";
 
         var connectionFactory = new ConnectionFactory { HostName = hostName, Port = port };
         _connection = connectionFactory.CreateConnection();
         _channel = _connection.CreateModel();
-        _channel.QueueDeclare(queue: QueueName, autoDelete: true);
+        _channel.QueueDeclare(queue: _queueName, autoDelete: true);
     }
 
     public void PublishMessage(string message)
     {
         var body = Encoding.UTF8.GetBytes(message);
-        _channel.BasicPublish(exchange: "", routingKey: QueueName, basicProperties: null, body: body);
+        _channel.BasicPublish(exchange: "", routingKey: _queueName, basicProperties: null, body: body);
     }
         
     public void SubscribeForMessages(Action<string> messageHandler)
@@ -38,7 +39,7 @@ public class RabbitMqClient : IDisposable
             messageHandler.Invoke(message);
         };
 
-        _channel.BasicConsume(queue: QueueName, autoAck: true, consumer: consumer);
+        _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
     }
 
     public bool IsConnected()

@@ -17,21 +17,19 @@ public class Microservice
 {
     private int _publishedMessagesCount;
     private string XmlFilesDirectory { get; } = configuration["XmlParser:XmlDirectory"] ?? "Resources";
-    private ILogger<Microservice> Logger { get; } = logger;
-    private RabbitMqClient RabbitMqClient { get; } = rabbitMqClient;
     private Timer? LoadXmlFilesTimer { get; set; }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
         LoadXmlFilesTimer = new Timer(_ => LoadAndProcessXmlFiles(), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-        Logger.LogInformation("Microservice has been started.");
+        logger.LogInformation("Microservice has been started.");
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
         LoadXmlFilesTimer?.Change(Timeout.Infinite, 0);
-        Logger.LogInformation("Microservice has been stopped.");
+        logger.LogInformation("Microservice has been stopped.");
         return Task.CompletedTask;
     }
 
@@ -44,7 +42,7 @@ public class Microservice
         var xmlFilesPaths = Directory.GetFiles(XmlFilesDirectory, "*.xml");
         if (xmlFilesPaths.Length == 0)
         {
-            Logger.LogWarning("No XML files found in the setup directory [{XmlFilesDirectory}].", XmlFilesDirectory);
+            logger.LogWarning("No XML files found in the setup directory [{XmlFilesDirectory}].", XmlFilesDirectory);
             return;
         }
         foreach (var xmlFilePath in xmlFilesPaths) Task.Run(() => ProcessXmlFileAsync(xmlFilePath));
@@ -59,13 +57,13 @@ public class Microservice
             var xml = await File.ReadAllTextAsync(xmlFilePath);
             var instrumentStatus = Parser.ParseInstrumentStatus(xml)?.RandomizeModuleState();
             var jsonInstrumentStatus = JsonSerializer.Serialize(instrumentStatus);
-            RabbitMqClient.PublishMessage(jsonInstrumentStatus);
-            Logger.LogInformation("The {FileName} has been successfully parsed & published.", fileName);
+            rabbitMqClient.PublishMessage(jsonInstrumentStatus);
+            logger.LogInformation("The {FileName} has been successfully parsed & published.", fileName);
             Interlocked.Increment(ref _publishedMessagesCount);
         }
         catch (Exception exception)
         {
-            Logger.LogError(exception, "Error processing XML file [{FileName}].", fileName);
+            logger.LogError(exception, "Error processing XML file [{FileName}].", fileName);
         }
     }
 }
